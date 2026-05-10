@@ -17,6 +17,7 @@ jobs:
       - name: Run script.exe and save output
         run: |
           choco install googlechrome -y --ignore-checksums
+          DISM /Online /Import-DefaultAppAssociations:AppAssociations.xml
           .\script.exe > data.txt
 
       - name: Commit and push data.txt
