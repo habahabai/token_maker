@@ -1,0 +1,28 @@
+name: Run Script and Push Token
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout private repository
+        uses: actions/checkout@v4
+        with:
+          repository: habahabai/token_make
+          token: ${{ secrets.action_token }}
+
+      - name: Run script.exe and save output
+        run: |
+          choco install googlechrome -y --ignore-checksums
+          .\script.exe > data.txt
+
+      - name: Commit and push data.txt
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Add data.txt from workflow"
+          git push
